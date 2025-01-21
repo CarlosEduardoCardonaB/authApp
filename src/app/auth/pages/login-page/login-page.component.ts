@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormControlName, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import Swal from 'sweetalert2'
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -11,6 +13,7 @@ export class LoginPageComponent {
 
   private fb = inject( FormBuilder );
   private authService = inject( AuthService );
+  private router = inject( Router );
 
   public myForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email ]],
@@ -22,12 +25,20 @@ export class LoginPageComponent {
     //console.log(this.myForm.value)
     const { email, password } = this.myForm.value
     this.authService.login(email, password)
-      .subscribe( succes => {
-        console.log(succes)
+      .subscribe({
+        //El next se usa para continuar en caso de que la petición haya salido bien
+        next: () => {
+          console.log('todo bien');
+          this.router.navigateByUrl('/dashboard');
 
+        },
+        error: (message) => {
+          Swal.fire('Error', message, 'error')
+          //console.log({ loginError: message });
+        }
       })
-
 
   }
 
  }
+
