@@ -11,10 +11,14 @@ export const isAuthenticatedGuard: CanActivateFn = (route, state) => {
 
   const authService = inject( AuthService );
   const router = inject( Router )
-  console.log({ status: authService.authStatus() });
+  console.log({ status: authService.authStatus() }, 'isAuthenticated.guard.ts');
 
   if( authService.authStatus() === AuthStatus.authenticated ){
     return true;
+  }
+
+  if( authService.authStatus() === AuthStatus.checking ){
+    return false;
   }
 
   // console.log('isAuthenticatedGuard');

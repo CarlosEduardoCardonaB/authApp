@@ -28,7 +28,7 @@ export class LoginPageComponent {
       .subscribe({
         //El next se usa para continuar en caso de que la petición haya salido bien
         next: () => {
-          console.log('todo bien');
+          //console.log('todo bien');
           this.router.navigateByUrl('/dashboard');
 
         },
