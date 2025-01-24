@@ -17,10 +17,6 @@ export const isAuthenticatedGuard: CanActivateFn = (route, state) => {
     return true;
   }
 
-  if( authService.authStatus() === AuthStatus.checking ){
-    return false;
-  }
-
   // console.log('isAuthenticatedGuard');
   // console.log({route, state});
 

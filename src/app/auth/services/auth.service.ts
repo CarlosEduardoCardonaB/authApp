@@ -1,8 +1,9 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environments';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { catchError, map, Observable, of, tap, throwError } from 'rxjs';
-import { User, AuthStatus, LoginResponse, CheckTokenResponse } from '../interfaces';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
+import { User, AuthStatus, LoginResponse, CheckTokenResponse, RegisterUser } from '../interfaces';
+
 
 
 @Injectable({
@@ -54,7 +55,7 @@ export class AuthService {
     //El of()
     //  de rxjs es para cumplir con el retorno de un booleano observable, por que el tipo de funcion observable no admite un return directo de un bool, como por ej "return true"
     if(!token) {
-
+      this.logout();
       return of(false);
     }
 
@@ -80,7 +81,28 @@ export class AuthService {
       )
   }
 
+  register(user: RegisterUser){
 
+    const url = `${ this.baseUrl }/auth/register`;
+    const {email, name, password, confirmPassword} = user;
+    const body = { email, name, password, confirmPassword };
+
+    return this.http.post<LoginResponse>(url, body)
+      .pipe(
+          map( ({user, token}) => this.setAuthentication(user, token)),
+          catchError( err =>  throwError( () => err.error.message ) //Este "err.error.message" lo configuramos en el backend de nest.
+        )
+      )
+  }
+
+
+  logout(){
+    //al hacer el logout no debemos hacer redirección por lo que en el app.component.ts tenemos el effect() que se encarga de monitorear cada señal.
+    localStorage.removeItem('token');
+    this._currentUser.set(null);
+    this._authStatus.set(AuthStatus.notAuthenticated);
+
+  }
 
 
 

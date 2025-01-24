@@ -185,6 +185,12 @@ button:hover {
   border-bottom: 2px solid #d9d9d9;
 }
 
+.wrap-input90 {
+  width: 100%;
+  position: relative;
+
+}
+
 .label-input100 {
   font-family: Poppins-Regular;
   font-size: 14px;
@@ -216,6 +222,7 @@ button:hover {
   top: 0;
   left: 0;
   pointer-events: none;
+  color: red;
 }
 
 .focus-input100::after {
