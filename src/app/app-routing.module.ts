@@ -21,7 +21,9 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  //el {useHash: true} nos sirve para colocar el hash en la url cuando despleguemos en prod, esto por lo que al recargar las
+  //páginas si no tenemos este /#/ nos va a arrojar un "Page not found". Las url quedarían asi "http://localhost:4200/#/auth/login"
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
